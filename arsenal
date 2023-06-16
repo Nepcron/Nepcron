@@ -58,7 +58,7 @@ xpcall(function()
 
 	local Misc = Window:CreateTab("Misc", 7743878358)
 
-
+	local FoV = aim
 
 	local InfJump = nil
 	local Aimbot = nil
@@ -575,16 +575,16 @@ aim:CreateToggle({
 		end
 	})
 
-	aim:CreateSection("FOV")
+	FoV:CreateSection("FOV")
 
-	aim:CreateToggle({
+	FoV:CreateToggle({
 		Name = "FOV Enabled",
 		Callback = function(v)
 			FOV.Visible = v
 		end
 	})
 
-	aim:CreateToggle({
+	FoV:CreateToggle({
 		Name = "Rainbow FOV",
 		Callback = function(v)
 			RainbowFov = v
@@ -597,7 +597,7 @@ aim:CreateToggle({
 		end
 	})
 
-	aim:CreateColorPicker({
+	FoV:CreateColorPicker({
 		Name = "FOV Color",
 		Color = Color3.fromRGB(255,255,255),
 		Callback = function(v)
@@ -605,7 +605,7 @@ aim:CreateToggle({
 		end
 	})
 
-	aim:CreateSlider({
+	FoV:CreateSlider({
 		Name = "FOV Radius",
 		Range = {"10", "1000"},
 		CurrentValue = 150,
@@ -770,7 +770,7 @@ aim:CreateToggle({
 		end
 		workspace.CurrentCamera.FieldOfView = Fov
 		Plr.Settings.FOV.Value = Fov
---[[
+
 		if workspace.CurrentCamera:FindFirstChild("Arms") and Hands == true then
 			for i, v in pairs(workspace.CurrentCamera.Arms:GetDescendants()) do
 				if v:IsA("BasePart") then
@@ -782,7 +782,6 @@ aim:CreateToggle({
 				end
 			end
 		end
-		]]
 		if BunnyHop == true and UIS:IsKeyDown(Enum.KeyCode.Space) and Plr.Character and Plr.Character:FindFirstChildOfClass("Humanoid") then
 			Plr.Character:FindFirstChildOfClass("Humanoid").Jump = true
 		end

@@ -1,7 +1,7 @@
 local Workspace = game:GetService("Workspace")
 xpcall(function()
-	repeat task.wait() until game:IsLoaded()
-	task.wait(0.5)
+	repeat wait() until game:IsLoaded()
+	wait(0.5)
 	
 	if getconnections then
 		for i, v in pairs(getconnections(game:GetService("ScriptContext").Error)) do
@@ -360,12 +360,12 @@ aim:CreateToggle({
 			TriggerBot = v
 		    task.spawn(function()
 			    while TriggerBot do
-				    task.wait(1 / ShotsPerSecond)
+				    wait(1 / ShotsPerSecond)
 				        if not shooting and mouse.Target then
 					        local p = game.Players:GetPlayerFromCharacter(mouse.Target.Parent) or game.Players:GetPlayerFromCharacter(mouse.Target.Parent.Parent)
 					    if p and (TeamCheck and Plr.TeamColor ~= p.TeamColor) then
 						    VIM:SendMouseButtonEvent(mouse.X, mouse.Y, 0, true, workspace, 0)
-						    task.wait()
+						    wait()
 						    VIM:SendMouseButtonEvent(mouse.X, mouse.Y, 0, false, workspace, 0)
 					    end
 				    end

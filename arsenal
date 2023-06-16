@@ -397,8 +397,8 @@ aim:CreateToggle({
 
    Aim:CreateToggle({
 	   Name = "Anti OverHeat",
-	   Callback = function(v)
-		   if v then
+	   Callback = function(V)
+		   if V then
 			   for i, v in pairs(weapons:GetChildren()) do
 				   if v:FindFirstChild("overheat") then
 					   v.overheat.Enabled = false
@@ -416,8 +416,8 @@ aim:CreateToggle({
 
    Aim:CreateToggle({
 	   Name = "Fast FireRate",
-	   Callback = function(v)
-		   if v then
+	   Callback = function(V)
+		   if V then
 			   for i, v in pairs(weapons:GetChildren()) do
 				   if v:FindFirstChild("FireRate") then
 					   v.FireRate.Value = 0.0101
@@ -441,8 +441,8 @@ aim:CreateToggle({
 
     Aim:CreateToggle({
 		Name = "No Spread",
-		Callback = function(v)
-			if v then
+		Callback = function(V)
+			if V then
 				for i, v in pairs(weapons:GetChildren()) do
 					if v:FindFirstChild("Spread") and v:FindFirstChild("MaxSpread") then
 						v.MaxSpread.Value = 0
@@ -462,8 +462,8 @@ aim:CreateToggle({
 
     Aim:CreateToggle({
 		Name = "Fast Reload",
-		Callback = function(v)
-			if v then
+		Callback = function(V)
+			if V then
 				for i, v in pairs(weapons:GetChildren()) do
 					if v:FindFirstChild("ReloadTime") then
 						v.ReloadTime.Value = 0
@@ -499,8 +499,8 @@ aim:CreateToggle({
 
     Aim:CreateToggle({
 		Name = "Fast EquipTime",
-		Callback = function(v)
-			if v then
+		Callback = function(V)
+			if V then
 				for i, v in pairs(weapons:GetChildren()) do
 					if v:FindFirstChild("EquipTime") then
 						v.EquipTime.Value = 0
@@ -518,8 +518,8 @@ aim:CreateToggle({
 
     Aim:CreateToggle({
 		Name = "Infinite Range",
-		Callback = function(v)
-			if v then
+		Callback = function(V)
+			if V then
 				for i, v in pairs(weapons:GetChildren()) do
 					if v:FindFirstChild("Range") then
 						v.Range.Value = 999
@@ -537,8 +537,8 @@ aim:CreateToggle({
 
     Aim:CreateToggle({
 		Name = "No Recoil",
-		Callback = function(v)
-			if v then
+		Callback = function(V)
+			if V then
 				for i, v in pairs(weapons:GetChildren()) do
 					if v:FindFirstChild("RecoilControl") then
 						v.RecoilControl.Value = 0
@@ -556,8 +556,8 @@ aim:CreateToggle({
 
     Aim:CreateToggle({
 		Name = "Always Auto",
-		Callback = function(v)
-			if v then
+		Callback = function(V)
+			if V then
 				for i, v in pairs(weapons:GetChildren()) do
 					if v:FindFirstChild("Auto") then
 						v.Auto.Value = true
@@ -579,7 +579,6 @@ aim:CreateToggle({
 			InfBullets = v
 		end
 	})
---[[
 	FoV:CreateSection("FOV")
 
 	FoV:CreateToggle({
@@ -664,7 +663,6 @@ aim:CreateToggle({
 			 })
 		end
 	})
-]]
 
 	Misc:CreateSection("Miscellaneous")
 
@@ -765,7 +763,6 @@ aim:CreateToggle({
 			InfJump = v
 		end
 	})
---[[
 	game:GetService("RunService").Heartbeat:Connect(function()
 		if FOV.Visible then
 			FOV.Position = UIS:GetMouseLocation()
@@ -833,6 +830,6 @@ aim:CreateToggle({
 			end
 		end
 	end)
-	]]
+	
 end, warn)
 

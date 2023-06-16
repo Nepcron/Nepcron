@@ -1,14 +1,13 @@
-local Workspace = game:GetService("Workspace")
 xpcall(function()
 	repeat wait() until game:IsLoaded()
 	wait(0.5)
-	--[[
+	
 	if getconnections then
 		for i, v in pairs(getconnections(game:GetService("ScriptContext").Error)) do
 			v:Disable()
 		end
 	end
-	]]
+	
 	
 	local RayFieldLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Nepcron/Nepcron/main/main"))()
 	
@@ -35,7 +34,7 @@ xpcall(function()
                 RememberJoins = true -- Set this to false to make them join the discord every time they load it up
             },
     
-        KeySystem = true, -- Set this to true to use our key system
+        KeySystem = false, -- Set this to true to use our key system
         KeySettings = {
             Title = "Nepcron | Arsenal",
             Subtitle = "Enter key",
@@ -84,6 +83,7 @@ xpcall(function()
 	local BunnyHop = nil
 	local RainbowFov = nil
 	local ESPTraces = nil
+	local Workspace = game:GetService("Workspace")
 
 	local FOV = Drawing.new("Circle")
 	FOV.Visible = false
@@ -579,7 +579,7 @@ aim:CreateToggle({
 			InfBullets = v
 		end
 	})
-
+--[[
 	FoV:CreateSection("FOV")
 
 	FoV:CreateToggle({
@@ -664,7 +664,7 @@ aim:CreateToggle({
 			 })
 		end
 	})
-
+]]
 
 	Misc:CreateSection("Miscellaneous")
 
@@ -724,7 +724,7 @@ aim:CreateToggle({
 
 	Misc:CreateToggle({
 		Name = "Rainbow Hands",
-		Callback = function(v)
+		Callback = function()
 			while true do
 				if workspace.Camera:FindFirstChild("Arms") and workspace.Camera.Arms:FindFirstChild("CSSArms") then
 					for _,v in pairs(workspace.Camera.Arms.CSSArms:GetChildren()) do
@@ -742,7 +742,7 @@ aim:CreateToggle({
 	
 	Misc:CreateToggle({
 		Name = "Rainbow Gun",
-		Callback = function(v)
+		Callback = function()
 			while true do
 				if workspace.Camera:FindFirstChild("Arms") and workspace.Camera.Arms:FindFirstChild("CSSArms") then
 					for _,v in pairs(workspace.Camera.Arms:GetChildren()) do
@@ -833,6 +833,6 @@ aim:CreateToggle({
 			end
 		end
 	end)
-
+	
 end, warn)
 

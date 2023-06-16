@@ -190,7 +190,7 @@ xpcall(function()
 
 	User:CreateSlider({
 		Name = "Speed",
-		Range = {"-100", "100"},
+		Range = {"16", "100"},
 		CurrentValue = 16,
 		Increment = 1,
 		Callback = function(V)
@@ -233,11 +233,11 @@ User:CreateToggle({
 
 User:CreateSlider({
 	Name = "JumpPower",
-	Range = {"-100", "100"},
+	Range = {"50", "100"},
 	Increment = 1,
-	CurrentValue = 0,
+	CurrentValue = 50,
 	Callback = function(V)
-		JumpPowerValue = -V
+		JumpPowerValue = V
 		if V then
 			for i, v in pairs(weapons:GetChildren()) do
 				if v:FindFirstChild("JumpPower%") then

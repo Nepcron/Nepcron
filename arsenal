@@ -60,6 +60,8 @@ xpcall(function()
 
 	local FoV = aim
 
+	local Aim = aim
+
 	local InfJump = nil
 	local Aimbot = nil
 	local AimbotPart = ""
@@ -279,7 +281,7 @@ User:CreateSlider({
 		Name = "Aimbot",
 		Callback = function(v)
 			Aimbot = v
-		    while Aimbot == true do
+		    while Aimbot do
 			    task.wait(0.1)
 			    if isholding then
 				    local Part = AimbotPart == "Random" and ({"Head", "HumanoidRootPart"})[math.random(1, 2)] or AimbotPart
@@ -356,7 +358,7 @@ aim:CreateToggle({
 		Callback = function(v)
 			TriggerBot = v
 		    task.spawn(function()
-			    while TriggerBot == true do
+			    while TriggerBot do
 				    task.wait(1 / ShotsPerSecond)
 				        if not shooting and mouse.Target then
 					        local p = game.Players:GetPlayerFromCharacter(mouse.Target.Parent) or game.Players:GetPlayerFromCharacter(mouse.Target.Parent.Parent)
@@ -387,10 +389,10 @@ aim:CreateToggle({
 		end
 	})
 
-   aim:CreateSection("Gun Mods")
+   Aim:CreateSection("Gun Mods")
 
 
-   aim:CreateToggle({
+   Aim:CreateToggle({
 	   Name = "Anti OverHeat",
 	   Callback = function(v)
 		   if v then
@@ -409,7 +411,7 @@ aim:CreateToggle({
 	    end
    })
 
-   aim:CreateToggle({
+   Aim:CreateToggle({
 	   Name = "Fast FireRate",
 	   Callback = function(v)
 		   if v then
@@ -434,7 +436,7 @@ aim:CreateToggle({
 	    end
    })
 
-    aim:CreateToggle({
+    Aim:CreateToggle({
 		Name = "No Spread",
 		Callback = function(v)
 			if v then
@@ -455,7 +457,7 @@ aim:CreateToggle({
 		end
 	})
 
-    aim:CreateToggle({
+    Aim:CreateToggle({
 		Name = "Fast Reload",
 		Callback = function(v)
 			if v then
@@ -492,7 +494,7 @@ aim:CreateToggle({
 		end
 	})
 
-    aim:CreateToggle({
+    Aim:CreateToggle({
 		Name = "Fast EquipTime",
 		Callback = function(v)
 			if v then
@@ -511,7 +513,7 @@ aim:CreateToggle({
 		end
 	})
 
-    aim:CreateToggle({
+    Aim:CreateToggle({
 		Name = "Infinite Range",
 		Callback = function(v)
 			if v then
@@ -530,7 +532,7 @@ aim:CreateToggle({
 		end
 	})
 
-    aim:CreateToggle({
+    Aim:CreateToggle({
 		Name = "No Recoil",
 		Callback = function(v)
 			if v then
@@ -549,7 +551,7 @@ aim:CreateToggle({
 		end
 	})
 
-    aim:CreateToggle({
+    Aim:CreateToggle({
 		Name = "Always Auto",
 		Callback = function(v)
 			if v then
@@ -568,7 +570,7 @@ aim:CreateToggle({
 		end
 	})
 
-    aim:CreateToggle({
+    Aim:CreateToggle({
 		Name = "Infinite Bullets",
 		Callback = function(v)
 			InfBullets = v
@@ -589,7 +591,7 @@ aim:CreateToggle({
 		Callback = function(v)
 			RainbowFov = v
 		    task.spawn(function()
-			    while RainbowFov == true do
+			    while RainbowFov do
 				    FOV.Color = Color3.fromHSV(tick() % 5 / 5, 1, 1)
 				    task.wait()
 			    end
@@ -633,7 +635,7 @@ aim:CreateToggle({
 		end
 	})
 
-	local tracersesp = ESP:CreateToggle({
+	ESP:CreateToggle({
 		Name = "ESP Tracers",
 		Callback = function(v)
 			ESPLib:Tracers(v)
@@ -765,14 +767,14 @@ aim:CreateToggle({
 		if FOV.Visible then
 			FOV.Position = UIS:GetMouseLocation()
 		end
-		if InfBullets == true then
+		if InfBullets then
 			Plr.PlayerGui.GUI.Client.Variables.ammocount.Value = 999
 			Plr.PlayerGui.GUI.Client.Variables.ammocount2.Value = 999
 		end
 		workspace.CurrentCamera.FieldOfView = Fov
 		Plr.Settings.FOV.Value = Fov
 
-		if workspace.CurrentCamera:FindFirstChild("Arms") and Hands == true then
+		if workspace.CurrentCamera:FindFirstChild("Arms") and Hands then
 			for i, v in pairs(workspace.CurrentCamera.Arms:GetDescendants()) do
 				if v:IsA("BasePart") then
 					if HandsMaterial == "" then
@@ -783,7 +785,7 @@ aim:CreateToggle({
 				end
 			end
 		end
-		if BunnyHop == true and UIS:IsKeyDown(Enum.KeyCode.Space) and Plr.Character and Plr.Character:FindFirstChildOfClass("Humanoid") then
+		if BunnyHop and UIS:IsKeyDown(Enum.KeyCode.Space) and Plr.Character and Plr.Character:FindFirstChildOfClass("Humanoid") then
 			Plr.Character:FindFirstChildOfClass("Humanoid").Jump = true
 		end
 	end)

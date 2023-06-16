@@ -1,0 +1,831 @@
+local Workspace = game:GetService("Workspace")
+xpcall(function()
+	repeat task.wait() until game:IsLoaded()
+	task.wait(0.5)
+	
+	if getconnections then
+		for i, v in pairs(getconnections(game:GetService("ScriptContext").Error)) do
+			v:Disable()
+		end
+	end
+	
+	local RayFieldLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Nepcron/Nepcron/main/main"))()
+	
+	local UIS = game:GetService("UserInputService")
+	local VIM = game:GetService("VirtualInputManager")
+	local Plr = game.Players.LocalPlayer
+	local weapons = game.ReplicatedStorage.Weapons
+	local weapons_data = weapons:Clone()
+	
+	local ESPLib = loadstring(game:HttpGet("https://pastebin.com/raw/7JxDQ2xW"))()
+	
+	local Window = RayFieldLib:CreateWindow({
+        Name = "Nepcron | Arsenal",
+        LoadingTitle = "Nepcron",
+        LoadingSubtitle = "A scripthub made by Nepcron",
+        ConfigurationSaving = {
+            Enabled = true,
+            FolderName = "Nepcron", -- Create a custom folder for your hub/game
+            FileName = "Nepcron04"
+        },
+            Discord = {
+                Enabled = false,
+                Invite = "", -- The Discord invite code, do not include discord.gg/
+                RememberJoins = true -- Set this to false to make them join the discord every time they load it up
+            },
+    
+        KeySystem = true, -- Set this to true to use our key system
+        KeySettings = {
+            Title = "Nepcron | Arsenal",
+            Subtitle = "Enter key",
+            Description = "Enter the key so we know you're a human this is a temporary key its getting updated.",
+            Note = "Get key at our Discord",
+            FileName = "Key",
+            SaveKey = true,
+            GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+            Key = "Key",
+            }
+        })
+    
+
+	local Main = Window:CreateTab("Main", 7733960981)
+
+	local aim = Window:CreateTab("Aim", 4483345998)
+	
+	local ESP = Window:CreateTab("Visual", 7733774602)
+
+	local User = Window:CreateTab("User", 7743875962)
+
+	local Misc = Window:CreateTab("Misc", 7743878358)
+
+	local FoV = aim
+
+
+	local InfJump = nil
+	local Aimbot = nil
+	local AimbotPart = ""
+	local SilentAim = nil
+	local SilentAimPart = ""
+	local Speed = nil
+	local SpeedValue = 16
+	local JumpPower = nil
+	local JumpPowerValue = 50
+	local TeamCheck = false
+	local InfBullets = nil
+	local TriggerBot = nil
+	local ShotsPerSecond = nil
+	local Hands = nil
+	local HandsColor = nil
+	local HandsMaterial = nil
+	local HandsRainbow = nil
+	local Fov = 70
+	local BunnyHop = nil
+	local RainbowFov = nil
+	local ESPTraces = nil
+
+	local FOV = Drawing.new("Circle")
+	FOV.Visible = false
+	FOV.Thickness = 1
+	FOV.NumSides = 100
+	FOV.Filled = false
+	FOV.Color = Color3.fromRGB(255, 255, 255)
+
+	Main:CreateSection("Detector")
+
+	Main:CreateToggle({
+		Name = "Staff Detector",
+		Callback = function(v)
+			local detect = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Creator.CreatorTargetId
+			local plr = game.Players.LocalPlayer
+			if v then
+				for i, v in pairs(game.Players:GetPlayers()) do
+					pcall(function()
+						if v:IsInGroup(detect) and v:GetRankInGroup(detect) > 1 then
+							plr:Kick("Detected Staff")
+						end
+					end)
+				end
+			end
+		end
+	})
+
+	Main:CreateSection("Server")
+
+	Main:CreateButton({
+		Name = "Server Hop",
+		Callback = function()
+			local httpservice = game:GetService("HttpService")
+			local plr = game.Players.LocalPlayer
+			local teleportservice = game:GetService("TeleportService")
+			local rbxserver = "https://games.roblox.com/v1/games/"
+			local place, job = game.PlaceId, game.JobId
+			local server = rbxserver .. job .. "/servers/Public?sortOrder=Desc&limit=100"
+			local function funcm(Argument)
+				local cursor = game:HttpGet(server .. ((Argument and "&cursor=" .. Argument) or ""))
+				return httpservice:JSONDecode(cursor)
+			end
+			local func;
+			repeat
+				local data = funcm(func)
+				for i, v in next, data.data do
+					if v.playing < v.maxPlayers and v.id ~= job then
+						local teleport, server = pcall(teleportservice.TeleportToPlaceInstance, teleportservice, place, v.id, plr)
+						if teleport then
+							break
+						end
+					end
+				end
+				func = data.nextPageCursor
+			until not func
+		end
+	})
+
+	Main:CreateButton({
+		Name = "Rejoin Server",
+		Callback = function()
+			game.Player.LocalPlayer:Teleport(game.PlaceId)
+		end
+	})
+
+    User:CreateSection("LocalPlayer")
+
+	User:CreateToggle({
+		Name = "Double Jump",
+		Callback = function(v)
+			if v then
+				for i, v in pairs(weapons:GetChildren()) do
+					if not v:FindFirstChild("DoubleJump") then
+						Instance.new("NumberValue", v).Name = "DoubleJump"
+					end
+				end
+			else
+				for i, v in pairs(weapons:GetChildren()) do
+					if v:FindFirstChild("DoubleJump") and not weapons_data[v.Name]:FindFirstChild("DoubleJump") then
+						v.DoubleJump:Destroy()
+					end
+				end
+			end
+		end
+	})
+
+	User:CreateToggle({
+		Name = "Speed Enabled",
+		Callback = function(v)
+			Speed = v
+		if v then
+			for i, v in pairs(weapons:GetChildren()) do
+				if v:FindFirstChild("Speed%") then
+					v["Speed%"].Value = SpeedValue
+				end
+			end
+		else
+			for i, v in pairs(weapons:GetChildren()) do
+				if v:FindFirstChild("Speed%") then
+					v["Speed%"].Value = weapons_data[v.Name]["Speed%"].Value
+				end
+			end
+		end
+		end
+	})
+
+	User:CreateSlider({
+		Name = "Speed",
+		Range = {"-100", "100"},
+		Callback = function(v)
+			SpeedValue = -v
+		    if v then
+			    for i, v in pairs(weapons:GetChildren()) do
+				    if v:FindFirstChild("Speed%") then
+					    v["Speed%"].Value = SpeedValue
+				    end
+			    end
+		    else
+			    for i, v in pairs(weapons:GetChildren()) do
+				    if v:FindFirstChild("Speed%") then
+					    v["Speed%"].Value = weapons_data[v.Name]["Speed%"].Value
+				    end
+			    end
+		    end
+		end
+	})
+
+User:CreateToggle({
+	Name = "JumpPower Enabled",
+	Callback = function(v)
+		JumpPower = v
+	    if v then
+		    for i, v in pairs(weapons:GetChildren()) do
+			    if v:FindFirstChild("JumpPower%") then
+				    v["JumpPower%"].Value = JumpPowerValue
+			    end
+		    end
+	    else
+		    for i, v in pairs(weapons:GetChildren()) do
+			    if v:FindFirstChild("JumpPower%") then
+				    v["JumpPower%"].Value = weapons_data[v.Name]["JumPower%"].Value
+			    end
+		    end
+	    end
+	end
+})
+
+User:CreateSlider({
+	Name = "JumpPower",
+	Range = {"-100", "100"},
+	Increment = 1,
+	CurrentValue = 0,
+	Callback = function(V)
+		JumpPowerValue = -v
+		if v then
+			for i, v in pairs(weapons:GetChildren()) do
+				if v:FindFirstChild("JumpPower%") then
+					v["JumpPower%"].Value = JumpPowerValue
+				end
+			end
+		else
+			for i, v in pairs(weapons:GetChildren()) do
+				if v:FindFirstChild("JumpPower%") then
+					v["JumpPower%"].Value = weapons_data[v.Name]["JumpPower%"].Value
+				end
+			end
+		end
+	end
+})
+
+	local shooting = false
+	local isholding = false
+	local mouse = Plr:GetMouse()
+
+	mouse.Button1Down:Connect(function()
+		shooting = true
+	end)
+
+	mouse.Button1Up:Connect(function()
+		shooting = false
+	end)
+
+	mouse.Button2Down:Connect(function()
+		isholding = true
+	end)
+
+	mouse.Button2Up:Connect(function()
+		isholding = false
+	end)
+
+	aim:CreateSection("Aim")
+
+	aim:CreateToggle({
+		Name = "Aimbot",
+		Callback = function(v)
+			Aimbot = v
+		    while Aimbot == true do
+			    task.wait(0.1)
+			    if isholding then
+				    local Part = AimbotPart == "Random" and ({"Head", "HumanoidRootPart"})[math.random(1, 2)] or AimbotPart
+				    for _, v in pairs(game.Players:GetPlayers()) do
+					    if v ~= Plr and v.Character and v.Character:FindFirstChild(Part) and (TeamCheck and Plr.TeamColor ~= v.TeamColor) then
+						    local pos, is = workspace.CurrentCamera:WorldToViewportPoint(v.Character[Part].Position)
+						    if is and (UIS:GetMouseLocation() - Vector2.new(pos.X, pos.Y)).Magnitude <= FOV.Radius and not workspace:FindPartOnRayWithWhitelist(Ray.new(Plr.Character.HumanoidRootPart.Position, v.Character.HumanoidRootPart.Position - Plr.Character.HumanoidRootPart.Position), workspace.Map:GetDescendants()) then
+							    workspace.CurrentCamera.CFrame = CFrame.new(workspace.CurrentCamera.CFrame.Position, v.Character[Part].Position)
+							        break
+						        end
+					        end
+				        end
+			        end
+		        end
+	        end
+	})
+
+	aim:CreateDropdown({
+		Name = "Aimbot Part",
+		Options = {"Random", "Head", "HumanoidRootPart"},
+		CurrentOption = "Head",
+		Callback = function(v)
+			AimbotPart = v[1]
+		end
+	})
+
+	aim:CreateToggle({
+		Name = "Silent Aim",
+		Callback = function(v)
+			local Part = SilentAimPart == "Random" and ({"Head", "HumanoidRootPart"})[math.random(1, 2)] or SilentAimPart
+			local PlrTeam = Plr.TeamColor
+			for _, v in pairs(game.Players:GetPlayers()) do
+				if v ~= Plr and v.Character and v.Character:FindFirstChild(Part) and (TeamCheck and v.TeamColor ~= PlrTeam) then
+					local pos, is = Workspace.CurrentCamera:WorldToViewportPoint(v.Character[Part].Position)
+					if is then
+						if (UIS:GetMouseLocation() - Vector2.new(pos.X, pos.Y)).Magnitude <= FOV.Radius and not workspace:FindPartOnRayWithWhitelist(Ray.new(Plr.Character.HumanoidRootPart.Position, v.Character.HumanoidRootPart.Position - Plr.Character.HumanoidRootPart.Position), workspace.Map:GetDescendants()) then
+							print(v, Part)
+							return v.Character[Part][i]
+						end
+					end
+				end
+			end
+		end
+	})
+	
+
+aim:CreateToggle({
+	Name = "Semi Wallbang",
+	CurrentOption = false,
+	Callback = function()
+        local oldIndex
+        oldIndex = hookmetamethod(game, "__index", function(self, method)
+            if string.lower(tostring(method)) == "kick" then
+                return wait(99)
+            end
+            if tostring(method) == "Clips" then
+                return workspace.Map
+            end
+            return oldIndex(self, method)
+        end)
+	end
+})
+
+
+	aim:CreateToggle({
+		Name = "Anti Aim",
+		Callback = function(v)
+			game.Players.LocalPlayer.Character:PivotTo(CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position) * CFrame.Angles(0, math.rad(math.random(-180, 180)), 0))
+		end
+	})
+	
+	aim:CreateToggle({
+		Name = "Trigger Bot",
+		Callback = function(v)
+			TriggerBot = v
+		    task.spawn(function()
+			    while TriggerBot == true do
+				    task.wait(1 / ShotsPerSecond)
+				        if not shooting and mouse.Target then
+					        local p = game.Players:GetPlayerFromCharacter(mouse.Target.Parent) or game.Players:GetPlayerFromCharacter(mouse.Target.Parent.Parent)
+					    if p and (TeamCheck and Plr.TeamColor ~= p.TeamColor) then
+						    VIM:SendMouseButtonEvent(mouse.X, mouse.Y, 0, true, workspace, 0)
+						    task.wait()
+						    VIM:SendMouseButtonEvent(mouse.X, mouse.Y, 0, false, workspace, 0)
+					    end
+				    end
+			    end
+		    end)
+		end
+	})
+
+	aim:CreateSlider({
+		Name = "Shots Per Second",
+		Range = {"1", "30"},
+		CurrentValue = 1,
+		Callback = function(v)
+			ShotsPerSecond = v
+		end
+	})
+
+	aim:CreateToggle({
+		Name = "Team Check",
+		Callback = function(v)
+			TeamCheck = v
+		end
+	})
+
+   aim:CreateSection("Gun Mods")
+
+
+   aim:CreateToggle({
+	   Name = "Anti OverHeat",
+	   Callback = function(v)
+		   if v then
+			   for i, v in pairs(weapons:GetChildren()) do
+				   if v:FindFirstChild("overheat") then
+					   v.overheat.Enabled = false
+				    end
+			    end
+		    else
+			    for i, v in pairs(weapons:GetChildren()) do
+				    if v:FindFirstChild("overheat") then
+					    v.overheat.Enabled = weapons_data[v.Name].overheat.Enabled
+				    end
+			    end
+		    end
+	    end
+   })
+
+   aim:CreateToggle({
+	   Name = "Fast FireRate",
+	   Callback = function(v)
+		   if v then
+			   for i, v in pairs(weapons:GetChildren()) do
+				   if v:FindFirstChild("FireRate") then
+					   v.FireRate.Value = 0.0101
+				   end
+				   if v:FindFirstChild("SFireRate") then
+					   v.SFireRate.Value = 0.0101
+				   end
+			    end
+		    else
+			    for i, v in pairs(weapons:GetChildren()) do
+				    if v:FindFirstChild("FireRate") then
+					    v.FireRate.Value = weapons_data[v.Name].FireRate.Value
+				    end
+				    if v:FindFirstChild("SFireRate") then
+					    v.SFireRate.Value = weapons_data[v.Name].SFireRate.Value
+				    end
+			    end
+		    end
+	    end
+   })
+
+    aim:CreateToggle({
+		Name = "No Spread",
+		Callback = function(v)
+			if v then
+				for i, v in pairs(weapons:GetChildren()) do
+					if v:FindFirstChild("Spread") and v:FindFirstChild("MaxSpread") then
+						v.MaxSpread.Value = 0
+						v.Spread.Value = 0
+					end
+				end
+			else
+				for i, v in pairs(weapons:GetChildren()) do
+					if v:FindFirstChild("Spread") and v:FindFirstChild("MaxSpread") then
+						v.MaxSpread.Value = weapons_data[v.Name].MaxSpread.Value
+						v.Spread.Value = weapons_data[v.Name].Spread.Value
+					end
+				end
+			end
+		end
+	})
+
+    aim:CreateToggle({
+		Name = "Fast Reload",
+		Callback = function(v)
+			if v then
+				for i, v in pairs(weapons:GetChildren()) do
+					if v:FindFirstChild("ReloadTime") then
+						v.ReloadTime.Value = 0
+					end
+					if v:FindFirstChild("EReaload") then
+						v.ERealod.Value = 0
+					end
+					if v:FindFirstChild("SReaload") then
+						v.SRealod.Value = 0
+					end
+					if v:FindFirstChild("AReaload") then
+						v.ARealod.Value = 0
+					end
+				end
+			else
+				for i, v in pairs(weapons:GetChildren()) do
+					if v:FindFirstChild("ReloadTime") then
+						v.ReloadTime.Value = weapons_data[v.Name].ReloadTime.Value
+					end
+					if v:FindFirstChild("EReaload") then
+						v.ERealod.Value = weapons_data[v.Name].ERealod.Value
+					end
+					if v:FindFirstChild("SReaload") then
+						v.SRealod.Value = weapons_data[v.Name].SRealod.Value
+					end
+					if v:FindFirstChild("AReaload") then
+						v.ARealod.Value = weapons_data[v.Name].ARealod.Value
+					end
+				end
+			end
+		end
+	})
+
+    aim:CreateToggle({
+		Name = "Fast EquipTime",
+		Callback = function(v)
+			if v then
+				for i, v in pairs(weapons:GetChildren()) do
+					if v:FindFirstChild("EquipTime") then
+						v.EquipTime.Value = 0
+					end
+				end
+			else
+				for i, v in pairs(weapons:GetChildren()) do
+					if v:FindFirstChild("EquipTime") then
+						v.EquipTime.Value = weapons_data[v.Name].EquipTime.Value
+					end
+				end
+			end
+		end
+	})
+
+    aim:CreateToggle({
+		Name = "Infinite Range",
+		Callback = function(v)
+			if v then
+				for i, v in pairs(weapons:GetChildren()) do
+					if v:FindFirstChild("Range") then
+						v.Range.Value = 999
+					end
+				end
+			else
+				for i, v in pairs(weapons:GetChildren()) do
+					if v:FindFirstChild("Range") then
+						v.Range.Value = weapons_data[v.Name].Range.Value
+					end
+				end
+			end
+		end
+	})
+
+    aim:CreateToggle({
+		Name = "No Recoil",
+		Callback = function(v)
+			if v then
+				for i, v in pairs(weapons:GetChildren()) do
+					if v:FindFirstChild("RecoilControl") then
+						v.RecoilControl.Value = 0
+					end
+				end
+			else
+				for i, v in pairs(weapons:GetChildren()) do
+					if v:FindFirstChild("RecoilControl") then
+						v.RecoilControl.Value = weapons_data[v.Name].RecoilControl.Value
+					end
+				end
+			end
+		end
+	})
+
+    aim:CreateToggle({
+		Name = "Always Auto",
+		Callback = function(v)
+			if v then
+				for i, v in pairs(weapons:GetChildren()) do
+					if v:FindFirstChild("Auto") then
+						v.Auto.Value = true
+					end
+				end
+			else
+				for i, v in pairs(weapons:GetChildren()) do
+					if v:FindFirstChild("Auto") then
+						v.Auto.Value = weapons_data[v.Name].Auto.Value
+					end
+				end
+			end
+		end
+	})
+
+    aim:CreateToggle({
+		Name = "Infinite Bullets",
+		Callback = function(v)
+			InfBullets = v
+		end
+	})
+
+	Fov:CreateSection("FOV")
+
+	FoV:CreateToggle({
+		Name = "FOV Enabled",
+		Callback = function(v)
+			FOV.Visible = v
+		end
+	})
+
+	FoV:CreateToggle({
+		Name = "Rainbow FOV",
+		Callback = function(v)
+			RainbowFov = v
+		    task.spawn(function()
+			    while RainbowFov == true do
+				    FOV.Color = Color3.fromHSV(tick() % 5 / 5, 1, 1)
+				    task.wait()
+			    end
+		    end)
+		end
+	})
+
+	FoV:CreateColorPicker({
+		Name = "FOV Color",
+		Color = Color3.fromRGB(255,255,255),
+		Callback = function(v)
+			FOV.Color = v
+		end
+	})
+
+	FoV:CreateSlider({
+		Name = "FOV Radius",
+		Range = {"10", "1000"},
+		CurrentValue = 150,
+		Callback = function(v)
+			FOV.Radius = v
+		end
+	})
+
+	ESP:CreateSection("ESP")
+
+	local namesesp = ESP:CreateToggle({
+		Name = "Player Names",
+		CurrentOption = false,
+		Callback = function(v)
+			ESPLib:NamesEnable(v)
+		end
+	})
+	
+	local boxesesp = ESP:CreateToggle({
+		Name = "Player Boxes",
+		CurrentOption = false,
+		Callback = function(v)
+			ESPLib:BoxesEnable(v)
+		end
+	})
+
+	local tracersesp = ESP:CreateToggle({
+		Name = "ESP Tracers",
+		Callback = function(v)
+			Tracers = v
+		end
+	})
+	
+	ESP:CreateToggle({
+		Name = "ESP Enabled",
+		CurrentOption = false,
+		Callback = function(v)
+		    ESPLib:Toggle(v)
+		end
+	})
+
+	ESP:CreateToggle({
+		Name = "Rainbow ESP",
+		CurrentOption = false,
+		Callback = function(v)
+			RayFieldLib:Notify({
+				Title = "Nepcron",
+				Content = "Comming soon!",
+				Duration = 6.5
+			 })
+		end
+	})
+
+
+	Misc:CreateSection("Miscellaneous")
+	
+	Misc:CreateSlider({
+		Name = "FOV",
+		Range = {"50", "120"},
+		Increment = 1,
+		CurrentValue = 70,
+		Callback = function(v)
+			Fov = v
+		end
+	})
+
+    Misc:CreateToggle({
+	    Name = "Rainbow Crosshair",
+	    CurrentOption = false,
+	    Callback = function()
+		    while true do
+			    if game.Players.LocalPlayer.PlayerGui.GUI.Crosshairs:FindFirstChild("Crosshair") then
+						for _,v in pairs(game.Players.LocalPlayer.PlayerGui.GUI.Crosshairs.Crosshair:GetChildren()) do
+							if v.Name ~= "Center1" then
+								pcall(function()
+								v.BackgroundColor3 = Color3.fromHSV(tick() % 5 / 5, 1, 1)
+							end)
+						end
+					end
+				end
+			    wait(0.1)
+		    end
+	    end
+    })
+
+	Misc:CreateToggle({
+		Name = "Bunny Hop",
+		Callback = function(v)
+			BunnyHop = v
+		end
+	})
+
+	Misc:CreateDropdown({
+		Name = "Hands Material",
+		Options = Enum.Material:GetEnumItems(),
+		CurrentOption = {""},
+		Callback = function(v)
+			HandsMaterial = Enum.Material[v[1]]
+		end
+	})
+
+	Misc:CreateColorPicker({
+		Name = "Hands Color",
+		Color = Color3.fromRGB(255,255,255),
+		Callback = function(v)
+			HandsColor = v
+		end
+	})
+
+
+	Misc:CreateToggle({
+		Name = "Rainbow Hands",
+		Callback = function(v)
+			while true do
+				if workspace.Camera:FindFirstChild("Arms") and workspace.Camera.Arms:FindFirstChild("CSSArms") then
+					for _,v in pairs(workspace.Camera.Arms.CSSArms:GetChildren()) do
+						if v:IsA("BasePart") then
+							v.Color = Color3.fromHSV(tick() % 5 / 5, 1, 1)
+							v.Transparency = 0.5
+							v.Material = "ForceField"
+						end
+					end
+				end
+				wait(0.1)
+			end
+		end
+	})
+	
+	Misc:CreateToggle({
+		Name = "Rainbow Gun",
+		Callback = function(v)
+			while true do
+				if workspace.Camera:FindFirstChild("Arms") and workspace.Camera.Arms:FindFirstChild("CSSArms") then
+					for _,v in pairs(workspace.Camera.Arms:GetChildren()) do
+						if v:IsA("BasePart") and v.Name ~= "Left Arm" and v.Name ~= "Right Arm" then
+							v.Color = Color3.fromHSV(tick() % 5 / 5, 1, 1)
+							v.Transparency = 0.5
+							v.Material = "ForceField"
+						end
+					end
+				end
+				wait(0.1)
+			end
+		end
+	})
+
+
+	Misc:CreateToggle({
+		Name = "Infinite Jump",
+		Callback = function(v)
+			InfJump = v
+		end
+	})
+
+	game:GetService("RunService").Heartbeat:Connect(function()
+		if FOV.Visible then
+			FOV.Position = UIS:GetMouseLocation()
+		end
+		if InfBullets == true then
+			Plr.PlayerGui.GUI.Client.Variables.ammocount.Value = 999
+			Plr.PlayerGui.GUI.Client.Variables.ammocount2.Value = 999
+		end
+		workspace.CurrentCamera.FieldOfView = Fov
+		Plr.Settings.FOV.Value = Fov
+
+		if workspace.CurrentCamera:FindFirstChild("Arms") and Hands == true then
+			for i, v in pairs(workspace.CurrentCamera.Arms:GetDescendants()) do
+				if v:IsA("BasePart") then
+					if PlayerHands.Material == "" then
+						PlayerHands.Material = v.Material.Name
+					end
+					v.Color = PlayerHands.Color
+					v.Material = PlayerHands.Material
+				end
+			end
+		end
+		if BunnyHop == true and UIS:IsKeyDown(Enum.KeyCode.Space) and Plr.Character and Plr.Character:FindFirstChildOfClass("Humanoid") then
+			Plr.Character:FindFirstChildOfClass("Humanoid").Jump = true
+		end
+	end)
+	
+
+	local espfunction = function(v, c)
+		c:WaitForChild("HumanoidRootPart")
+		local esp = ESPLib:Add(c, {
+			Name = v.DisplayName,
+			Player = v,
+			PrimaryPart = c.HumanoidRootPart,
+			RenderInNil = false,
+			AutoRemove = true,
+			Color = v.TeamColor
+		})
+	end
+	
+	for i, v in pairs(game.Players:GetPlayers()) do
+		if v ~= Plr then
+			if v.Character then
+				espfunction(v, v.Character)
+			end
+			v.CharacterAdded:Connect(function(c)
+				espfunction(v, c)
+			end)
+		end
+	end
+	
+
+
+
+	game.Players.PlayerAdded:Connect(function(v)
+		v.CharacterAdded:Connect(function(c)
+			espfunction(v, c)
+		end)
+	end)
+	
+	UIS.InputBegan:Connect(function(input, gui)
+		if InfJump == true and not gui and input.KeyCode == Enum.KeyCode.Space then
+			if Plr.Character and Plr.Character:FindFirstChildOfClass("Humanoid") then
+				Plr.Character:FindFirstChildOfClass("Humanoid"):ChangeState(Enum.HumanoidStateType.Jumping)
+			end
+		end
+	end)
+
+end, warn)
+

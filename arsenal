@@ -765,7 +765,7 @@ aim:CreateToggle({
 			InfJump = v
 		end
 	})
-
+--[[
 	game:GetService("RunService").Heartbeat:Connect(function()
 		if FOV.Visible then
 			FOV.Position = UIS:GetMouseLocation()
@@ -833,6 +833,6 @@ aim:CreateToggle({
 			end
 		end
 	end)
-	
+	]]
 end, warn)
 

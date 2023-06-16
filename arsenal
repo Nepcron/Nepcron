@@ -192,8 +192,9 @@ xpcall(function()
 		Name = "Speed",
 		Range = {"-100", "100"},
 		CurrentValue = 16,
+		Increment = 1,
 		Callback = function(V)
-			SpeedValue = -V
+			SpeedValue = V
 		    if V then
 			    for i, v in pairs(weapons:GetChildren()) do
 				    if v:FindFirstChild("Speed%") then

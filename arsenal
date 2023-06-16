@@ -608,6 +608,7 @@ aim:CreateToggle({
 	FoV:CreateSlider({
 		Name = "FOV Radius",
 		Range = {"10", "1000"},
+		Increment = 1,
 		CurrentValue = 150,
 		Callback = function(v)
 			FOV.Radius = v
@@ -821,7 +822,7 @@ aim:CreateToggle({
 	end)
 	
 	UIS.InputBegan:Connect(function(input, gui)
-		if InfJump == true and not gui and input.KeyCode == Enum.KeyCode.Space then
+		if InfJump and not gui and input.KeyCode == Enum.KeyCode.Space then
 			if Plr.Character and Plr.Character:FindFirstChildOfClass("Humanoid") then
 				Plr.Character:FindFirstChildOfClass("Humanoid"):ChangeState(Enum.HumanoidStateType.Jumping)
 			end

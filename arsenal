@@ -575,7 +575,7 @@ aim:CreateToggle({
 		end
 	})
 
-	local section = aim:CreateSection("FOV")
+	aim:CreateSection("FOV")
 
 	aim:CreateToggle({
 		Name = "FOV Enabled",
@@ -770,7 +770,7 @@ aim:CreateToggle({
 		end
 		workspace.CurrentCamera.FieldOfView = Fov
 		Plr.Settings.FOV.Value = Fov
-
+--[[
 		if workspace.CurrentCamera:FindFirstChild("Arms") and Hands == true then
 			for i, v in pairs(workspace.CurrentCamera.Arms:GetDescendants()) do
 				if v:IsA("BasePart") then
@@ -782,6 +782,7 @@ aim:CreateToggle({
 				end
 			end
 		end
+		]]
 		if BunnyHop == true and UIS:IsKeyDown(Enum.KeyCode.Space) and Plr.Character and Plr.Character:FindFirstChildOfClass("Humanoid") then
 			Plr.Character:FindFirstChildOfClass("Humanoid").Jump = true
 		end

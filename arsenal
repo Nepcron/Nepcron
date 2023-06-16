@@ -282,7 +282,7 @@ User:CreateSlider({
 		Callback = function(v)
 			Aimbot = v
 		    while Aimbot do
-			    task.wait(0.1)
+			 
 			    if isholding then
 				    local Part = AimbotPart == "Random" and ({"Head", "HumanoidRootPart"})[math.random(1, 2)] or AimbotPart
 				    for _, v in pairs(game.Players:GetPlayers()) do
@@ -296,6 +296,7 @@ User:CreateSlider({
 				        end
 			        end
 		        end
+				wait(0.1)
 	        end
 	})
 
@@ -368,6 +369,7 @@ aim:CreateToggle({
 						    VIM:SendMouseButtonEvent(mouse.X, mouse.Y, 0, false, workspace, 0)
 					    end
 				    end
+					wait(0.1)
 			    end
 		    end)
 		end
@@ -593,7 +595,7 @@ aim:CreateToggle({
 		    task.spawn(function()
 			    while RainbowFov do
 				    FOV.Color = Color3.fromHSV(tick() % 5 / 5, 1, 1)
-				    task.wait()
+				    wait(0.1)
 			    end
 		    end)
 		end

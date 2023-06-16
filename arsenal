@@ -51,14 +51,13 @@ xpcall(function()
 	local Main = Window:CreateTab("Main", 7733960981)
 
 	local aim = Window:CreateTab("Aim", 4483345998)
-	
+
 	local ESP = Window:CreateTab("Visual", 7733774602)
 
 	local User = Window:CreateTab("User", 7743875962)
 
 	local Misc = Window:CreateTab("Misc", 7743878358)
 
-	local FoV = aim
 
 
 	local InfJump = nil
@@ -318,7 +317,7 @@ User:CreateSlider({
 					if is then
 						if (UIS:GetMouseLocation() - Vector2.new(pos.X, pos.Y)).Magnitude <= FOV.Radius and not workspace:FindPartOnRayWithWhitelist(Ray.new(Plr.Character.HumanoidRootPart.Position, v.Character.HumanoidRootPart.Position - Plr.Character.HumanoidRootPart.Position), workspace.Map:GetDescendants()) then
 							print(v, Part)
-							return v.Character[Part][i]
+							return v.Character[Part]
 						end
 					end
 				end
@@ -576,16 +575,16 @@ aim:CreateToggle({
 		end
 	})
 
-	aim:CreateSection("FOV")
+	local section = aim:CreateSection("FOV")
 
-	FoV:CreateToggle({
+	aim:CreateToggle({
 		Name = "FOV Enabled",
 		Callback = function(v)
 			FOV.Visible = v
 		end
 	})
 
-	FoV:CreateToggle({
+	aim:CreateToggle({
 		Name = "Rainbow FOV",
 		Callback = function(v)
 			RainbowFov = v
@@ -598,7 +597,7 @@ aim:CreateToggle({
 		end
 	})
 
-	FoV:CreateColorPicker({
+	aim:CreateColorPicker({
 		Name = "FOV Color",
 		Color = Color3.fromRGB(255,255,255),
 		Callback = function(v)
@@ -606,7 +605,7 @@ aim:CreateToggle({
 		end
 	})
 
-	FoV:CreateSlider({
+	aim:CreateSlider({
 		Name = "FOV Radius",
 		Range = {"10", "1000"},
 		CurrentValue = 150,
@@ -636,7 +635,7 @@ aim:CreateToggle({
 	local tracersesp = ESP:CreateToggle({
 		Name = "ESP Tracers",
 		Callback = function(v)
-			Tracers = v
+			ESPLib:Tracers(v)
 		end
 	})
 	
@@ -775,11 +774,11 @@ aim:CreateToggle({
 		if workspace.CurrentCamera:FindFirstChild("Arms") and Hands == true then
 			for i, v in pairs(workspace.CurrentCamera.Arms:GetDescendants()) do
 				if v:IsA("BasePart") then
-					if PlayerHands.Material == "" then
-						PlayerHands.Material = v.Material.Name
+					if HandsMaterial == "" then
+						HandsMaterial = v.Material.Name
 					end
-					v.Color = PlayerHands.Color
-					v.Material = PlayerHands.Material
+					v.Color = HandsColor
+					v.Material = HandsMaterial
 				end
 			end
 		end

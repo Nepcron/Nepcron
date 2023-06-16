@@ -576,7 +576,7 @@ aim:CreateToggle({
 		end
 	})
 
-	FoV:CreateSection("FOV")
+	aim:CreateSection("FOV")
 
 	FoV:CreateToggle({
 		Name = "FOV Enabled",

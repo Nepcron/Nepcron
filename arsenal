@@ -664,7 +664,7 @@ aim:CreateToggle({
 
 
 	Misc:CreateSection("Miscellaneous")
-	
+
 	Misc:CreateSlider({
 		Name = "FOV",
 		Range = {"50", "120"},
@@ -678,8 +678,8 @@ aim:CreateToggle({
     Misc:CreateToggle({
 	    Name = "Rainbow Crosshair",
 	    CurrentOption = false,
-	    Callback = function()
-		    while true do
+	    Callback = function(v)
+		    while v do
 			    if game.Players.LocalPlayer.PlayerGui.GUI.Crosshairs:FindFirstChild("Crosshair") then
 						for _,v in pairs(game.Players.LocalPlayer.PlayerGui.GUI.Crosshairs.Crosshair:GetChildren()) do
 							if v.Name ~= "Center1" then

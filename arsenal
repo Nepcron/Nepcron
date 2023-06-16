@@ -151,8 +151,8 @@ xpcall(function()
 
 	User:CreateToggle({
 		Name = "Double Jump",
-		Callback = function(v)
-			if v then
+		Callback = function(V)
+			if V then
 				for i, v in pairs(weapons:GetChildren()) do
 					if not v:FindFirstChild("DoubleJump") then
 						Instance.new("NumberValue", v).Name = "DoubleJump"
@@ -170,9 +170,9 @@ xpcall(function()
 
 	User:CreateToggle({
 		Name = "Speed Enabled",
-		Callback = function(v)
-			Speed = v
-		if v then
+		Callback = function(V)
+			Speed = V
+		if V then
 			for i, v in pairs(weapons:GetChildren()) do
 				if v:FindFirstChild("Speed%") then
 					v["Speed%"].Value = SpeedValue
@@ -191,9 +191,9 @@ xpcall(function()
 	User:CreateSlider({
 		Name = "Speed",
 		Range = {"-100", "100"},
-		Callback = function(v)
-			SpeedValue = -v
-		    if v then
+		Callback = function(V)
+			SpeedValue = -V
+		    if V then
 			    for i, v in pairs(weapons:GetChildren()) do
 				    if v:FindFirstChild("Speed%") then
 					    v["Speed%"].Value = SpeedValue
@@ -211,9 +211,9 @@ xpcall(function()
 
 User:CreateToggle({
 	Name = "JumpPower Enabled",
-	Callback = function(v)
-		JumpPower = v
-	    if v then
+	Callback = function(V)
+		JumpPower = V
+	    if V then
 		    for i, v in pairs(weapons:GetChildren()) do
 			    if v:FindFirstChild("JumpPower%") then
 				    v["JumpPower%"].Value = JumpPowerValue
@@ -235,8 +235,8 @@ User:CreateSlider({
 	Increment = 1,
 	CurrentValue = 0,
 	Callback = function(V)
-		JumpPowerValue = -v
-		if v then
+		JumpPowerValue = -V
+		if V then
 			for i, v in pairs(weapons:GetChildren()) do
 				if v:FindFirstChild("JumpPower%") then
 					v["JumpPower%"].Value = JumpPowerValue

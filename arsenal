@@ -335,7 +335,7 @@ aim:CreateToggle({
         local oldIndex
         oldIndex = hookmetamethod(game, "__index", function(self, method)
             if string.lower(tostring(method)) == "kick" then
-                return wait(99)
+                return wait(9e9)
             end
             if tostring(method) == "Clips" then
                 return workspace.Map

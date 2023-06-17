@@ -43,7 +43,7 @@ xpcall(function()
             FileName = "Key",
             SaveKey = true,
             GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
-            Key = "Key",
+            Key = "PrivateProject",
             }
         })
     
@@ -62,27 +62,26 @@ xpcall(function()
 
 	local Aim = aim
 
-	local InfJump = nil
-	local Aimbot = nil
+	local InfJump = false
+	local Aimbot = false
 	local AimbotPart = ""
-	local SilentAim = nil
+	local SilentAim = false
 	local SilentAimPart = ""
-	local Speed = nil
+	local Speed = 16
 	local SpeedValue = 16
-	local JumpPower = nil
+	local JumpPower = 50
 	local JumpPowerValue = 50
 	local TeamCheck = false
-	local InfBullets = nil
-	local TriggerBot = nil
-	local ShotsPerSecond = nil
-	local Hands = nil
+	local InfBullets = false
+	local TriggerBot = false
+	local ShotsPerSecond = 1
+	local Hands = false
 	local HandsColor = nil
-	local HandsMaterial = nil
-	local HandsRainbow = nil
+	local HandsMaterial = ""
 	local Fov = 70
-	local BunnyHop = nil
-	local RainbowFov = nil
-	local ESPTraces = nil
+	local BunnyHop = false
+	local RainbowFov = false
+	local ESPTraces = false
 	local Workspace = game:GetService("Workspace")
 
 	local FOV = Drawing.new("Circle")
@@ -174,7 +173,7 @@ xpcall(function()
 		Name = "Speed Enabled",
 		Callback = function(V)
 			Speed = V
-		if V then
+		if Speed then
 			for i, v in pairs(weapons:GetChildren()) do
 				if v:FindFirstChild("Speed%") then
 					v["Speed%"].Value = SpeedValue
@@ -217,7 +216,7 @@ User:CreateToggle({
 	Name = "JumpPower Enabled",
 	Callback = function(V)
 		JumpPower = V
-	    if V then
+	    if JumpPower then
 		    for i, v in pairs(weapons:GetChildren()) do
 			    if v:FindFirstChild("JumpPower%") then
 				    v["JumpPower%"].Value = JumpPowerValue
@@ -226,7 +225,7 @@ User:CreateToggle({
 	    else
 		    for i, v in pairs(weapons:GetChildren()) do
 			    if v:FindFirstChild("JumpPower%") then
-				    v["JumpPower%"].Value = weapons_data[v.Name]["JumPower%"].Value
+				    v["JumpPower%"].Value = weapons_data[v.Name]["JumpPower%"].Value
 			    end
 		    end
 	    end
@@ -255,7 +254,7 @@ User:CreateSlider({
 		end
 	end
 })
-
+--[[
 	local shooting = false
 	local isholding = false
 	local mouse = Plr:GetMouse()
@@ -283,7 +282,6 @@ User:CreateSlider({
 		Callback = function(v)
 			Aimbot = v
 		    while Aimbot do
-			 
 			    if isholding then
 				    local Part = AimbotPart == "Random" and ({"Head", "HumanoidRootPart"})[math.random(1, 2)] or AimbotPart
 				    for _, v in pairs(game.Players:GetPlayers()) do
@@ -354,7 +352,7 @@ aim:CreateToggle({
 			game.Players.LocalPlayer.Character:PivotTo(CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position) * CFrame.Angles(0, math.rad(math.random(-180, 180)), 0))
 		end
 	})
-	
+
 	aim:CreateToggle({
 		Name = "Trigger Bot",
 		Callback = function(v)
@@ -640,7 +638,11 @@ aim:CreateToggle({
 	ESP:CreateToggle({
 		Name = "ESP Tracers",
 		Callback = function(v)
-			ESPLib:Tracers(v)
+			RayFieldLib:Notify({
+				Title = "Nepcron",
+				Content = "Please wait until this function is fixed.",
+				Duration = 6.5
+			})
 		end
 	})
 	
@@ -701,16 +703,18 @@ aim:CreateToggle({
 			BunnyHop = v
 		end
 	})
+]]
 
+--[[
 	Misc:CreateDropdown({
 		Name = "Hands Material",
 		Options = Enum.Material:GetEnumItems(),
 		CurrentOption = {""},
 		Callback = function(v)
 			HandsMaterial = Enum.Material[v[1]]
-		end
-	})
-
+	--	end
+	--})]]
+--[[
 	Misc:CreateColorPicker({
 		Name = "Hands Color",
 		Color = Color3.fromRGB(255,255,255),
@@ -830,6 +834,6 @@ aim:CreateToggle({
 			end
 		end
 	end)
-	
+	]]
 end, warn)
 
